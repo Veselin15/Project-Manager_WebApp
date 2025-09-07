@@ -1,17 +1,13 @@
-# Project Manager (Django) — Advanced (v3.1)
+# Project Manager (Django) — Advanced (v3.2)
 
-This build includes all features from v3 plus a fix for member/owner permission checks when task URLs use `pk` (e.g. `/tasks/<id>/edit/`).
-
-## Highlights
-- Tasks with due date, status, priority, assignee, and board order
-- Kanban board (no custom template tags)
-- Collaborators & roles (Owner/Member)
-- Role-based permissions (owners manage project & members; members manage tasks)
+All features + fixes:
+- Tasks, Kanban (no custom tags), collaborators & roles
+- Role-based permissions; **permissions fix for task routes**
 - REST API (DRF)
 - PostgreSQL + Docker
 - Logout via POST + CSRF
 - Initial migrations included
-- **Permissions fix**: correctly resolves project from `Task` pk for task routes
+- **Members page fix**: ensures `self.object` is set even if the form is invalid, preventing AttributeError
 
 ## Run (local, SQLite)
 ```bash

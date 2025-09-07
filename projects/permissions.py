@@ -4,18 +4,15 @@ from .models import Project, ProjectMembership, Task
 
 class _BaseProjectAccessMixin(UserPassesTestMixin):
     def resolve_project(self):
-        # 1) If view already has an object, derive project from it
         obj = getattr(self, 'object', None)
         if obj is not None:
             if hasattr(obj, 'project') and obj.project:
                 return obj.project
             if isinstance(obj, Project):
                 return obj
-        # 2) Explicit project_pk in URL
         project_pk = self.kwargs.get('project_pk')
         if project_pk:
             return get_object_or_404(Project, pk=project_pk)
-        # 3) pk may refer to Task or Project
         pk = self.kwargs.get('pk')
         if pk is not None:
             try:

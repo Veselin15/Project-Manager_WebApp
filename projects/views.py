@@ -102,8 +102,9 @@ class ProjectMembersView(OwnerRequiredMixin, SingleObjectMixin, FormView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
+        # Always set self.object so get_context_data/form_invalid can access it
+        self.object = self.get_object()
         if 'remove_user' in request.POST:
-            self.object = self.get_object()
             uid = request.POST.get('remove_user')
             if str(self.object.owner_id) == uid:
                 messages.error(request, 'Cannot remove the owner from the project.')
