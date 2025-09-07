@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Logged out · Project Manager{% endblock %}
+{% block content %}
+<div class="alert alert-info">
+  You’ve been logged out. <a class="alert-link" href="{% url 'login' %}">Log in again</a>
+</div>
+{% endblock %}

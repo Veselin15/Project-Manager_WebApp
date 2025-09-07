@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Board · {{ project.name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 m-0">Board: {{ project.name }}</h1>
+  <a class="btn btn-sm btn-primary" href="{% url 'projects:task_create' project.pk %}">+ New Task</a>
+</div>
+<div class="row g-3">
+  {% for code, label, tasks in columns_data %}
+  <div class="col-md-3">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>{{ label }}</strong>
+        <span class="badge bg-secondary">{{ tasks|length }}</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for t in tasks %}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'projects:task_detail' t.pk %}"><strong>{{ t.title }}</strong></a>
+              <small class="text-muted">#{{ t.id }}</small>
+            </div>
+            {% if t.due_date %}<div class="small text-muted">Due {{ t.due_date }}</div>{% endif %}
+            <form method="post" class="mt-2">{% csrf_token %}
+              <input type="hidden" name="task_id" value="{{ t.id }}">
+              <div class="input-group input-group-sm">
+                <select class="form-select" name="status">
+                  {% for s,v in t.Status.choices %}
+                    <option value="{{ s }}" {% if s == t.status %}selected{% endif %}>{{ v }}</option>
+                  {% endfor %}
+                </select>
+                <button class="btn btn-outline-secondary" type="submit">Move</button>
+              </div>
+            </form>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">No tasks</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Sign up · Project Manager{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <h1 class="h3 mb-3">Create your account</h1>
+    <form method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-success w-100" type="submit">Sign up</button>
+    </form>
+    <p class="mt-3">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+</div>
+{% endblock %}

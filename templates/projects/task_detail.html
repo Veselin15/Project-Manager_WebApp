@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.title }} · Task · Project Manager{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 m-0">{{ object.title }}</h1>
+  <div>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'projects:task_edit' object.pk %}">Edit</a>
+    <a class="btn btn-sm btn-outline-danger" href="{% url 'projects:task_delete' object.pk %}">Delete</a>
+  </div>
+</div>
+<p class="text-muted">Status: {{ object.get_status_display }} · Priority: {{ object.get_priority_display }}{% if object.due_date %} · Due {{ object.due_date }}{% endif %}</p>
+{% if object.description %}
+<p>{{ object.description|linebreaks }}</p>
+{% else %}
+<p class="text-muted">No description.</p>
+{% endif %}
+{% endblock %}

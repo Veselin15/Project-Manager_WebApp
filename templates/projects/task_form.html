@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{% if object %}Edit{% else %}Create{% endif %} Task · Project Manager{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">{% if object %}Edit{% else %}Create{% endif %} Task</h1>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary" type="submit">Save</button>
+  <a class="btn btn-secondary" href="{% if object %}{% url 'projects:project_detail' object.project.pk %}{% else %}{% url 'projects:project_list' %}{% endif %}">Cancel</a>
+</form>
+{% endblock %}

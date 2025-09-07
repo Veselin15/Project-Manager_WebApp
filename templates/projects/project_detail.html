@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.name }} · Project Manager{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 m-0">{{ object.name }}</h1>
+  <div>
+    <a class="btn btn-outline-primary me-2" href="{% url 'projects:board' object.pk %}">Board</a>
+    <a class="btn btn-outline-secondary me-2" href="{% url 'projects:project_members' object.pk %}">Collaborators</a>
+    <a class="btn btn-outline-primary me-2" href="{% url 'projects:project_edit' object.pk %}">Edit</a>
+    <a class="btn btn-outline-danger" href="{% url 'projects:project_delete' object.pk %}">Delete</a>
+  </div>
+</div>
+<p class="text-muted">Status: <span class="badge bg-secondary">{{ object.get_status_display }}</span></p>
+{% if object.description %}
+<p>{{ object.description|linebreaks }}</p>
+{% else %}
+<p class="text-muted">No description.</p>
+{% endif %}
+<div class="row mt-3">
+  <div class="col-md-6">
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Start date:</strong> {{ object.start_date|default:'—' }}</li>
+      <li class="list-group-item"><strong>End date:</strong> {{ object.end_date|default:'—' }}</li>
+      <li class="list-group-item"><strong>Created:</strong> {{ object.created_at|date:'Y-m-d H:i' }}</li>
+      <li class="list-group-item"><strong>Updated:</strong> {{ object.updated_at|date:'Y-m-d H:i' }}</li>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h2 class="h5 m-0">Tasks</h2>
+      <a class="btn btn-sm btn-primary" href="{% url 'projects:task_create' object.pk %}">+ New Task</a>
+    </div>
+    {% if object.tasks.all %}
+      <ul class="list-group">
+        {% for t in object.tasks.all %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <a href="{% url 'projects:task_detail' t.pk %}"><strong>{{ t.title }}</strong></a>
+              <div class="small text-muted">{{ t.get_status_display }}{% if t.due_date %} · due {{ t.due_date }}{% endif %}</div>
+            </div>
+            <div>
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'projects:task_edit' t.pk %}">Edit</a>
+              <a class="btn btn-sm btn-outline-danger" href="{% url 'projects:task_delete' t.pk %}">Delete</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="text-muted">No tasks yet.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
